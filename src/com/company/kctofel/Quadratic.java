@@ -57,9 +57,7 @@ public class Quadratic {
 
     // double firstDerivative (slope)
     public double getDerivative() {
-
-        derivative = 2*this.roots[0] + this.b;
-
+        this.derivative = (2*(this.a)*(this.roots[0])) + this.b;
         return derivative;
     }
 
