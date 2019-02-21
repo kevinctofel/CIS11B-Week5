@@ -6,6 +6,7 @@
  *
  * Kevin C. Tofel
  * February 21, 2019
+ * Test comment
  *
  */
 
@@ -31,7 +32,7 @@ public class QuadraticDriver {
             System.out.println(equation.toString(point));
         }
 
-        else if (input.equals("C")){
+        else if (input.equals("C")){ // ran out of time to make this a short 3 iteration loop!
 
             System.out.println("Enter a value for a.");
             input = keyboard.next();
