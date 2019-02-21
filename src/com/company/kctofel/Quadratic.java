@@ -1,47 +1,111 @@
+/**
+ * Class for a quadratic equation that calculates
+ * both real and complex roots and the derivative
+ * at any point on the line
+ *
+ * Kevin C. Tofel
+ * February 21, 2019
+ *
+ */
 package com.company.kctofel;
 
-import org.apache.commons.math3.analysis.differentiation.DerivativeStructure;
+import org.apache.commons.math3.complex.Complex; // used to calculate and display complex numbers
+import org.apache.commons.math3.complex.ComplexFormat; // needed to format a complex object
+import java.text.NumberFormat;
+import java.util.Arrays;
 
 public class Quadratic {
 
-    private double a, b, c, derivative;
-    private double[] roots = new double[2];
+    private double a, b, c;
 
-    // default constructor (calling setters)
-    public Quadratic (){
+    /**
+     * Quadratic equation object with three parameters
+     * This is for the default constructor
+     */
+    public Quadratic() {
 
-        setVariables(1.0,-1.0,0.0);
+        setVariables(4.0, 5.0, 6.0);
     }
 
-    // constructor (calling setters)
-    public Quadratic(double a, double b, double  c) {
-        setVariables(a,b,c);
+    /**
+     * Quadratic equation object with three parameters
+     * This is for user input values
+     *
+     * @param a is a double value for a
+     * @param b is a double value for b
+     * @param c is a double value for c
+     */
+    public Quadratic(double a, double b, double c) {
+        setVariables(a, b, c);
     }
 
-    // void setters
-    public void setVariables(double a, double b, double c){
+    /**
+     * Sets variable for any Quadratic equation object
+     *
+     * @param a is a double value for a
+     * @param b is a double value for b
+     * @param c is a double value for c
+     */
+    public void setVariables(double a, double b, double c) {
         this.a = a;
         this.b = b;
         this.c = c;
     }
 
+    /**
+     * Method to get the value of a for a Quadratic object
+     * @return a double value for a
+     */
     public double getA() {
         return this.a;
     }
 
+    /**
+     * Method to get the value of b for a Quadratic object
+     * @return a double value for b
+     */
     public double getB() {
         return this.b;
     }
 
+    /**
+     * Method to get the value of c for a Quadratic object
+     * @return a double value for c
+     */
     public double getC() {
         return this.c;
     }
 
-    // boolean isRoot real
+    /**
+     * Method to test if a number is real
+     * based on value of discriminant
+     *
+     * @return a boolean indicating real or not real
+     */
+    public boolean isReal() {
+        if (this.getDiscriminant() >= 0)
+            return true;
+        else
+            return false;
+    }
 
-    // boolean isRoot complex
+    /**
+     * Method to test if a number is complex
+     * based on value of discriminant
+     *
+     * @return a boolean indicating complex or not complex
+     */
+    public boolean isComplex() {
+        if (this.getDiscriminant() < 0.0)
+            return true;
+        else
+            return false;
+    }
 
-    // boolean isDiscriminant negative
+    /** Method to test if discriminant is negative
+     *
+     * @return a boolean indicating negative or non-negative
+     */
     public boolean isDiscriminantNeg() {
 
         if (this.getDiscriminant() < 0)
@@ -50,38 +114,98 @@ public class Quadratic {
             return false;
     }
 
-    // double getDiscriminant
+    /**
+     * Method to calculate the discriminant
+     *
+     * @return double value of the discriminant
+     */
     public double getDiscriminant() {
         return Math.pow((this.b), 2.0) - (4 * this.a * this.c);
     }
 
-    // double firstDerivative (slope)
-    public double getDerivative() {
-        this.derivative = (2*(this.a)*(this.roots[0])) + this.b;
-        return derivative;
+    /**
+     * Method to calculate the first derivative at any
+     * point on a parabola
+     *
+     * @param point a double representing the point user
+     *              wants the slope
+     * @return a double equal to the slope of the line at a specific point
+     */
+    public double getDerivative(double point) {
+
+        return (2 * (this.a) * (point) + this.b);
+
     }
 
-    // [list of doubles] real root
-    public void getRoots() {
+    /**
+     * Method to calculate both roots of a quadratic equation,
+     * regardless of real or complex number
+     *
+     * @return an array comprised of two real or complex numbers
+     *
+     */
+    public Complex[] getRoots() {
+
+        Complex[] roots = new Complex[2]; // array to hold a pair of real or complex numbers
 
         if (!(isDiscriminantNeg())) { // Positive discriminant
-            roots[0] = (-(this.b) + Math.sqrt(getDiscriminant())) / (2 * this.a);
-            roots[1] = (-(this.b) - Math.sqrt(getDiscriminant())) / (2 * this.a);
+            double realRoot1 = (-(this.b) - Math.sqrt(getDiscriminant())) / (2 * this.a);
+            double realRoot2 = (-(this.b) + Math.sqrt(getDiscriminant())) / (2 * this.a);
+            Complex first = new Complex(realRoot1, 0);
+            Complex second = new Complex(realRoot2, 0);
+            roots[0] = first;
+            roots[1] = second;
+        } else {
+            Complex first = new Complex(-b / (2 * a), Math.sqrt(-this.getDiscriminant()) / (2 * a));
+            Complex second = new Complex(-b / (2 * a), -Math.sqrt(-this.getDiscriminant()) / (2 * a));
+
+            roots[0] = first;
+            roots[1] = second;
         }
-        else {
-            roots[0] = (-(this.b) + Math.sqrt(-(getDiscriminant()))) / (2 * this.a);
-            roots[1] = (-(this.b) - Math.sqrt(-(getDiscriminant()))) / (2 * this.a);
-        }
+
+        return roots;
     } // end getRoots
 
 
-    // [list of doubles] complex root
+    /**
+     * Method to format complex numbers
+     * @param roots is an array of two complex or real numbers
+     * @return a string formatted properly for real or complex numbers
+     *          with up to five points of precision
+     */
+    public String formatComplex(Complex[] roots){
 
-    // String toString
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(5); // formatting to 5 digits
+        nf.setMaximumFractionDigits(5);
+        ComplexFormat cf = new ComplexFormat(nf);
 
-    public String toString() {
+        String s = cf.format(roots[0]) + " and " + cf.format(roots[1]); // concatenate both formatted numbers
 
-        return ("Root 1: " + roots[0] + "\nRoot 2: " + roots[1] + "\nDerivative: " + derivative);
+        return s;
+
     }
 
+    /**
+     * Method to show all information about the Quadratic object
+     * including details on the discriminant, roots and deriviative
+     * @param x is the user defined point on a parabola for the slope
+     * @return a fully formatted string with all information about the Qudratic
+     */
+    public String toString(double x) {
+        String output;
+        output = "y = " + this.a + "x^2 + " + this.b + "x + " + this.c + "\n";
+        if (isReal()) {
+            output += "The roots are real because the discriminant is positive.\n";
+            output += "Roots are: " + Arrays.toString(this.getRoots()) + "\n";
+            output += "Derivative when x = " + x + " is: " + this.getDerivative(x);
+        } else if (isComplex()) {
+            output += "The roots are complex because the discriminant is negative.\n";
+            output += "Roots are: " + formatComplex(this.getRoots()) + "\n";
+            output += "Derivative when x = " + x + " is: " + this.getDerivative(x);
+        }
+        return output;
+    }
 } // end Quadratic
+
+

@@ -1,22 +1,54 @@
+/**
+ * Driver file to test Quadratic class with
+ * user input for either a, b, c values or
+ * default constructor. User input for derivative
+ * to calculate it at any point
+ *
+ * Kevin C. Tofel
+ * February 21, 2019
+ *
+ */
+
 package com.company.kctofel;
+import java.util.Scanner;
 
 public class QuadraticDriver {
 
     public static void main(String[] args) {
 
-    Quadratic equation1 = new Quadratic(-4, 2, 1);
-    Quadratic equation2 = new Quadratic();
+        double a, b, c, point;
 
-    equation1.getRoots();
-    equation2.getRoots();
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Type D to use default values, C to input custom values.");
+        String input = keyboard.next();
 
-    equation1.getDerivative();
-    equation2.getDerivative();
+        if (input.equals("D")) {
 
-    System.out.println(equation1.toString());
-    System.out.println(equation2.toString());
+            Quadratic equation = new Quadratic();
+            System.out.println("Enter an X value for the derivative");
+            input = keyboard.next();
+            point = Double.parseDouble(input);
+            System.out.println(equation.toString(point));
+        }
 
+        else if (input.equals("C")){
 
+            System.out.println("Enter a value for a.");
+            input = keyboard.next();
+            a = Double.parseDouble(input);
+            System.out.println("Enter a value for b.");
+            input = keyboard.next();
+            b = Double.parseDouble(input);
+            System.out.println("Enter a value for c.");
+            input = keyboard.next();
+            c = Double.parseDouble(input);
+            System.out.println("Enter an X value for the derivative");
+            input = keyboard.next();
+            point = Double.parseDouble(input);
+            Quadratic equation = new Quadratic(a, b, c);
+            System.out.println(equation.toString(point));
+
+        }
 
     }
 } // end QuadraticDriver
