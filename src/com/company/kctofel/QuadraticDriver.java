@@ -1,55 +1,42 @@
 /**
  * Driver file to test Quadratic class with
  * user input for either a, b, c values or
- * default constructor. User input for derivative
- * to calculate it at any point
+ * default constructor.
+ *
+ * Sort quadratics based on rate of opening
  *
  * Kevin C. Tofel
  * February 21, 2019
- * Test comment
+ * Upated March 11, 2019
  *
  */
 
 package com.company.kctofel;
-import java.util.Scanner;
+import java.util.Arrays;
+
 
 public class QuadraticDriver {
 
     public static void main(String[] args) {
 
-        double a, b, c, point;
+        double a, b, c;
 
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("Type D to use default values, C to input custom values.");
-        String input = keyboard.next();
+        // Create five quadratics
+        Quadratic equation = new Quadratic();
+        Quadratic equation2 = new Quadratic(3, 2, -4);
+        Quadratic equation3 = new Quadratic(2.5, 4.7, 2.6);
+        Quadratic equation4 = new Quadratic(.03, 2.1, -3.7);
+        Quadratic equation5 = new Quadratic(7.2,5.2, 2.5);
 
-        if (input.equals("D")) {
+        // Gather them into an array
+        Quadratic[] formulas = {equation, equation2, equation3, equation4, equation5};
 
-            Quadratic equation = new Quadratic();
-            System.out.println("Enter an X value for the derivative");
-            input = keyboard.next();
-            point = Double.parseDouble(input);
-            System.out.println(equation.toString(point));
+        // Sort the quadratics based on speed of opening
+        Arrays.sort(formulas);
+
+        // For testing only: display the equations in order of sort
+        for (Quadratic elements : formulas) {
+            System.out.println("y = " + elements.a + "x^2 + " + elements.b + "x + " + elements.c);
         }
-
-        else if (input.equals("C")){ // ran out of time to make this a short 3 iteration loop!
-
-            System.out.println("Enter a value for a.");
-            input = keyboard.next();
-            a = Double.parseDouble(input);
-            System.out.println("Enter a value for b.");
-            input = keyboard.next();
-            b = Double.parseDouble(input);
-            System.out.println("Enter a value for c.");
-            input = keyboard.next();
-            c = Double.parseDouble(input);
-            System.out.println("Enter an X value for the derivative");
-            input = keyboard.next();
-            point = Double.parseDouble(input);
-            Quadratic equation = new Quadratic(a, b, c);
-            System.out.println(equation.toString(point));
-
-        }
-
     }
 } // end QuadraticDriver

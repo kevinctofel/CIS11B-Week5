@@ -14,9 +14,11 @@ import org.apache.commons.math3.complex.ComplexFormat; // needed to format a com
 import java.text.NumberFormat;
 import java.util.Arrays;
 
-public class Quadratic {
+public class Quadratic implements Comparable<Quadratic> {
 
-    private double a, b, c;
+    protected double a;
+    protected double b;
+    protected double c;
 
     /**
      * Quadratic equation object with three parameters
@@ -47,7 +49,7 @@ public class Quadratic {
      * @param c is a double value for c
      */
     public void setVariables(double a, double b, double c) {
-        this.a = a;
+        this.a = a; // TODO break these out and add error checking when a=0
         this.b = b;
         this.c = c;
     }
@@ -148,6 +150,8 @@ public class Quadratic {
 
         Complex[] roots = new Complex[2]; // array to hold a pair of real or complex numbers
 
+        // TODO get rid of ifs
+
         if (!(isDiscriminantNeg())) { // Positive discriminant
             double realRoot1 = (-(this.b) - Math.sqrt(getDiscriminant())) / (2 * this.a);
             double realRoot2 = (-(this.b) + Math.sqrt(getDiscriminant())) / (2 * this.a);
@@ -158,7 +162,6 @@ public class Quadratic {
         } else {
             Complex first = new Complex(-b / (2 * a), Math.sqrt(-this.getDiscriminant()) / (2 * a));
             Complex second = new Complex(-b / (2 * a), -Math.sqrt(-this.getDiscriminant()) / (2 * a));
-
             roots[0] = first;
             roots[1] = second;
         }
@@ -205,6 +208,18 @@ public class Quadratic {
             output += "Derivative when x = " + x + " is: " + this.getDerivative(x);
         }
         return output;
+    }
+
+    /**
+     * CompareTo method determines which of two Quadradtic equations opens faster
+     * @param other is a Quadratic object to compare to
+     * @return -1,0,1 depending on which is larger or if they are equal
+     */
+    @Override
+    public int compareTo(Quadratic other) {
+
+        return Double.compare(this.a, other.a);
+
     }
 } // end Quadratic
 
